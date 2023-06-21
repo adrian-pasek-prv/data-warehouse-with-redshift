@@ -166,18 +166,69 @@ staging_songs_copy = (f"""
 # FINAL TABLES
 
 songplay_table_insert = ("""
+    insert into songplays (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+    select
+        to_timestamp(e.ts) as start_time,
+        e.user_id, 
+        e.user_level, 
+        s.song_id,
+        s.artist_id, 
+        e.session_id,
+        e.location, 
+        e.user_agent
+    from staging_events e
+    join staging_songs s on e.song_title = s.title
+        and e.artist_name = s.artist_name
+        and e.song_length = s.duration
+    and e.page = 'NextSong'
 """)
 
 user_table_insert = ("""
+    insert into users (user_id, first_name, last_name, gender, level)
+    select distinct
+        user_first_name, 
+        user_last_name, 
+        user_gender, 
+        user_level
+    from staging_events
+    where page = 'NextSong'
 """)
 
 song_table_insert = ("""
+    insert into songs (song_id, title, artist_id, year, duration)
+    select distinct
+        song_id, 
+        title,
+        artist_id,
+        year,
+        duration
+    from staging_songs
+    where song_id is not null
 """)
 
 artist_table_insert = ("""
+    insert into artists (artist_id, name, location, latitude, longitude) 
+    select distinct
+        artist_id,
+        artist_name,
+        artist_location,
+        artist_latitude,
+        artist_longitude
+    from staging_songs
+    where artist_id is not null
 """)
 
 time_table_insert = ("""
+    insert into time (start_time, hour, day, week, month, year, weekday)
+    select
+        start_time,
+        extract(hour from start_time) as hour,
+        extract(day from start_time) as day,
+        extract(week from start_time) as week, 
+        extract(month from start_time) as month,
+        extract(year from start_time) as year, 
+        extract(dayofweek from start_time) as weekday
+    from songplays
 """)
 
 # QUERY LISTS
