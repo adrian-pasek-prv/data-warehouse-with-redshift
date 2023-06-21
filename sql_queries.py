@@ -5,28 +5,13 @@ import os
 # Get the home path string
 home = os.path.expanduser('~')
 
-# Import variables from terraform.tvars.json
-with open(home + '/github-repos/de-with-aws/terraform/terraform.tvars.json') as f:
-    data = json.load(f)
-    DWH_DB = data['redshift_database_name']
-    DWH_DB_USER = data['redshift_admin_username']
-    DWH_DB_PASSWORD = data['redshift_admin_password']
-
-# Import outputs from terraform_output.json
+# Import redshift iam role from terraform_output.json
 with open(home + '/github-repos/de-with-aws/terraform/terraform_output.json') as f:
     data = json.load(f)
-    DWH_ENDPOINT = data['cluster_endpoint']['value']
     DWH_ROLE_ARN = data['redshift_iam_arn']['value']
-
-# Import AWS access key and secret key with configparser
-config = configparser.ConfigParser()
-config.read_file(open(home + '/.aws/credentials'))
-
-# Import keys from default profile
-AWS_ACCESS_KEY = config.get('default','aws_access_key_id')
-AWS_SECRET_KEY = config.get('default','aws_secret_access_key')
-
+    
 # Import S3 paths specified in s3_paths.cfg
+config = configparser.ConfigParser()
 config.read_file(open('s3_paths.cfg'))
 
 # Import values from S3 profile
