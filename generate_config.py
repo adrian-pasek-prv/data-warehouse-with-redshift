@@ -11,6 +11,8 @@ def main():
         data = json.load(f)
         DWH_ROLE_ARN = data['redshift_iam_arn']['value']
         DWH_ENDPOINT = data['cluster_endpoint']['value']
+        # Remove port form endpoint string
+        DWH_ENDPOINT = DWH_ENDPOINT.split(':')[0]
 
     # Import values from terraform.tvars.json
     with open(home + '/github-repos/de-with-aws/terraform/terraform.tvars.json') as f:
@@ -36,14 +38,14 @@ def main():
     # IAM_ROLE section
     config.add_section("IAM_ROLE")
     
-    config.set('IAM_ROLE', 'ARN', DWH_ROLE_ARN)
+    config.set('IAM_ROLE', 'ARN', f"'{DWH_ROLE_ARN}'")
     
     # S3 paths section
     config.add_section("S3")
     
-    config.set('S3', 'LOG_DATA', 's3://udacity-dend/log_data')
-    config.set('S3', 'LOG_JSONPATH', 's3://udacity-dend/log_json_path.json')
-    config.set('S3', 'SONG_DATA', 's3://udacity-dend/song_data')
+    config.set('S3', 'LOG_DATA', "'s3://udacity-dend/log_data'")
+    config.set('S3', 'LOG_JSONPATH', "'s3://udacity-dend/log_json_path.json'")
+    config.set('S3', 'SONG_DATA', "'s3://udacity-dend/song_data'")
     
     with open("dwh.cfg", 'w') as f:
         config.write(f)
