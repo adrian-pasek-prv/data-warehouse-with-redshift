@@ -2,24 +2,9 @@ import configparser
 import json
 import os
 
-# Get the home path string
-home = os.path.expanduser('~')
-
-# Import redshift iam role from terraform_output.json
-with open(home + '/github-repos/de-with-aws/terraform/terraform_output.json') as f:
-    data = json.load(f)
-    DWH_ROLE_ARN = data['redshift_iam_arn']['value']
-    
-# Import S3 paths specified in s3_paths.cfg
+# CONFIG
 config = configparser.ConfigParser()
-config.read_file(open('s3_paths.cfg'))
-
-# Import values from S3 profile
-LOG_DATA_PATH = config.get('S3','LOG_DATA')
-# Mapping of column names if json item names don't match column names in table
-# https://docs.aws.amazon.com/redshift/latest/dg/r_COPY_command_examples.html#copy-from-json-examples-using-jsonpaths
-LOG_JSONPATH_COL_MAPPING = config.get('S3','LOG_JSONPATH')
-SONG_DATA_PATH = config.get('S3','SONG_DATA')
+config.read('dwh.cfg')
 
 # DROP TABLES
 
@@ -134,19 +119,19 @@ time_table_create = ("""
 
 # STAGING TABLES
 
-staging_events_copy = (f"""
+staging_events_copy = ("""
     copy staging_events
-    from {LOG_DATA_PATH}
-    iam_role {DWH_ROLE_ARN}
-    json {LOG_JSONPATH_COL_MAPPING};
-""")
+    from {}
+    iam_role {}
+    json {};
+""").format(config.get('S3','LOG_DATA'), config.get('IAM_ROLE', 'ARN'), config.get('S3','LOG_JSONPATH'))
 
-staging_songs_copy = (f"""
+staging_songs_copy = ("""
     copy staging_songs
-    from {SONG_DATA_PATH}
-    iam_role {DWH_ROLE_ARN}
+    from {}
+    iam_role {}
     json 'auto';
-""")
+""").format(config.get('S3','SONG_DATA'), config.get('IAM_ROLE', 'ARN'))
 
 # FINAL TABLES
 
