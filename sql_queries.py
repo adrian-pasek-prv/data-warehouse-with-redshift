@@ -123,6 +123,7 @@ staging_events_copy = ("""
     copy staging_events
     from {}
     iam_role {}
+    region 'us-west-2'
     json {};
 """).format(config.get('S3','LOG_DATA'), config.get('IAM_ROLE', 'ARN'), config.get('S3','LOG_JSONPATH'))
 
@@ -130,6 +131,7 @@ staging_songs_copy = ("""
     copy staging_songs
     from {}
     iam_role {}
+    region 'us-west-2'
     json 'auto';
 """).format(config.get('S3','SONG_DATA'), config.get('IAM_ROLE', 'ARN'))
 
