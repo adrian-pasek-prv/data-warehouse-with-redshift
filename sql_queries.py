@@ -49,6 +49,7 @@ staging_songs_table_create = ("""
         "artist_longitude" double precision,
         "artist_location" text,
         "artist_name" text,
+        "song_id" text,
         "title" text,
         "duration" double precision,
         "year" smallint
@@ -157,6 +158,7 @@ songplay_table_insert = ("""
 user_table_insert = ("""
     insert into users (user_id, first_name, last_name, gender, level)
     select distinct
+        user_id,
         user_first_name, 
         user_last_name, 
         user_gender, 
