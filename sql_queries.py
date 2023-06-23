@@ -139,7 +139,7 @@ staging_songs_copy = ("""
 songplay_table_insert = ("""
     insert into songplays (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
     select
-        to_timestamp(e.ts) as start_time,
+        timestamp 'epoch' + e.ts / 1000 * interval '1 second' as start_time,
         e.user_id, 
         e.user_level, 
         s.song_id,
