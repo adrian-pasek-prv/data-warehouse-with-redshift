@@ -20,24 +20,24 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 
 staging_events_table_create= ("""
     create table "staging_events" (
-        "artist" text,
+        "artist_name" text,
         "auth" text,
-        "firstName" text,
-        "gender" varchar(1),
-        "itemInSession" smallint,
-        "lastName" text,
-        "length" double precision,
-        "level" text,
+        "user_first_name" text,
+        "user_gender" varchar(1),
+        "item_in_session" smallint,
+        "user_last_name" text,
+        "song_length" double precision,
+        "user_level" text,
         "location" text,
         "method" text,
         "page" text,
         "registration" double precision,
-        "sessionId" int,
-        "song" text,
+        "session_id" int,
+        "song_title" text,
         "status" smallint,
         "ts" bigint,
-        "userAgent" text,
-        "userId" int
+        "user_agent" text,
+        "user_id" int
     );
 """)
 
@@ -49,7 +49,6 @@ staging_songs_table_create = ("""
         "artist_longitude" double precision,
         "artist_location" text,
         "artist_name" text,
-        "song_id" text,
         "title" text,
         "duration" double precision,
         "year" smallint
