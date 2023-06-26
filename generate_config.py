@@ -3,6 +3,11 @@ import os
 import json
 
 def main():
+    '''
+    Use `terraform_output.json` and `terraform.tvars.json` files in order to generate a config 
+    that stores all necessary AWS variables in order to connect to S3 and Redshift cluster
+    '''
+    
     # Get the home path string
     home = os.path.expanduser('~')
 
