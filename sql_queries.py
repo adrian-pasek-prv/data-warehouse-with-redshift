@@ -59,14 +59,14 @@ staging_songs_table_create = ("""
 songplay_table_create = ("""
     create table "songplays" (
         "songplay_id" int identity(0,1),
-        "start_time" timestamp,
-        "user_id" text,
-        "level" text,
+        "start_time" timestamp not null,
+        "user_id" text not null,
+        "level" text not null,
         "song_id" text,
         "artist_id" text,
-        "session_id" int,
+        "session_id" int not null,
         "location" text,
-        "user_agent" text,
+        "user_agent" text not null,
         primary key("songplay_id")
     );
 """)
@@ -74,10 +74,10 @@ songplay_table_create = ("""
 user_table_create = ("""
     create table "users" (
         "user_id" text,
-        "first_name" text,
-        "last_name" text,
-        "gender" varchar(1),
-        "level" text,
+        "first_name" text not null,
+        "last_name" text not null,
+        "gender" varchar(1) not null,
+        "level" text not null,
         primary key ("user_id")
     );
 """)
@@ -85,10 +85,10 @@ user_table_create = ("""
 song_table_create = ("""
     create table "songs" (
         "song_id" text,
-        "title" text,
-        "artist_id" text,
-        "year" smallint,
-        "duration" double precision,
+        "title" text not null,
+        "artist_id" text not null,
+        "year" smallint not null,
+        "duration" double precision not null,
         primary key ("song_id")
     );
 """)
@@ -96,7 +96,7 @@ song_table_create = ("""
 artist_table_create = ("""
     create table "artists" (
         "artist_id" text,
-        "name" text,
+        "name" text not null,
         "location" text,
         "latitude" double precision,
         "longitude" double precision,
@@ -107,12 +107,12 @@ artist_table_create = ("""
 time_table_create = ("""
     create table "time" (
         "start_time" timestamp,
-        "hour" smallint,
-        "day" smallint,
-        "week" smallint,
-        "month" smallint,
-        "year" smallint,
-        "weekday" smallint,
+        "hour" smallint not null,
+        "day" smallint not null,
+        "week" smallint not null,
+        "month" smallint not null,
+        "year" smallint not null,
+        "weekday" smallint not null,
         primary key ("start_time")
     );
 """)
